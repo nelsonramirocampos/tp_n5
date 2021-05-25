@@ -10,7 +10,7 @@ namespace TrabajoPracticoN5
     {
         public static double truncar(double nro)
         {
-            int decimales = int.Parse(Math.Pow(10, 2).ToString());
+            int decimales = int.Parse(Math.Pow(10, 3).ToString());
             return Math.Truncate(nro * decimales) / decimales;
         }
     }

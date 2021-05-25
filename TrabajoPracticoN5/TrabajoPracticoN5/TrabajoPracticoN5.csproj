@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cabina.cs" />
+    <Compile Include="Estado_Cabina.cs" />
+    <Compile Include="Estado_Vehiculo.cs" />
     <Compile Include="GeneradoresRND.cs" />
     <Compile Include="Simulacion.cs">
       <SubType>Form</SubType>

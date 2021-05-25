@@ -13,18 +13,18 @@ namespace TrabajoPracticoN5
  */
         public static Double RndLenguaje()
         {
-            Random rnd = new Random();
+            //Random rnd = new Random();
 
-            return Utilidades.truncar(rnd.NextDouble());
+            return Utilidades.truncar(random());
         }
 
-        private static Random random()
+        private static double random()
         {
             Guid guid = Guid.NewGuid();
             String justNumber = new String(guid.ToString().Where(Char.IsDigit).ToArray());
             int seed = int.Parse(justNumber.Substring(0, 4));
 
-            return new Random(seed);
+            return Utilidades.truncar(new Random(seed).NextDouble());
         }
 
         /**
@@ -76,29 +76,14 @@ namespace TrabajoPracticoN5
                     );
             }
 
-            return N;
+            return Utilidades.truncar(N);
         }
-        public static Double exponencial(double lambda)
+        public static Double exponencial(double lambda, double nro_rnd)
         {
-            Double x = (-1 / lambda) * Math.Log(1 - random().NextDouble());
+            Double x = (-1 / lambda) * Math.Log(1 - nro_rnd);
 
             return Utilidades.truncar(x);
         }
 
-        public static int poisson(double media)
-        {
-            double P = 1;
-            int X = -1;
-            double A = Math.Exp(-1.0 * media);
-
-            do
-            {
-                double U = random().NextDouble();
-                P = P * U;
-                X = X + 1;
-            } while (P >= A);
-
-            return X;
-        }
     }
 }
