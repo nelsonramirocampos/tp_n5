@@ -101,40 +101,65 @@ namespace TrabajoPracticoN5
 
         public int asignarCabina()
         {
-            Cabina x;
-
-            if (this.Cabinas.Count == 0) //No existe ninguna cabina
+            foreach (Cabina cabina in this.Cabinas)
             {
-                x = new Cabina(1);
-                x.Estado = Estado_Cabina.Oc.ToString();
-
-                this.Cabinas.Add(x);
-
-                return x.Nro_cabina;
-            }
-            else
-            {
-                List<Cabina> ordenada = this.Cabinas.OrderBy(o => o.Capacidad).ToList();
-
-
-                if (ordenada[0].Capacidad == 4) //genero una cabina nueva
+                if (cabina.Capacidad < 4)
                 {
-                    x = new Cabina(this.Cabinas.Count+1);
-                    x.Estado = Estado_Cabina.Oc.ToString();
+                    cabina.Capacidad++;
+                    cabina.Estado = Estado_Cabina.Oc.ToString();
 
-                    this.Cabinas.Add(x);
-
-                    return x.Nro_cabina;
-                }
-                else
-                {
-                    this.Cabinas[ordenada[0].Nro_cabina - 1].Capacidad++;
-
-                    this.Cabinas[ordenada[0].Nro_cabina - 1].Estado = Estado_Cabina.Oc.ToString();
-
-                    return this.Cabinas[ordenada[0].Nro_cabina - 1].Nro_cabina;
+                    return cabina.Nro_cabina;
                 }
             }
+
+
+            Cabina x = new Cabina(this.Cabinas.Count + 1);
+            x.Estado = Estado_Cabina.Oc.ToString();
+
+            this.Cabinas.Add(x);
+
+            return x.Nro_cabina;
+
+
+            //Cabina x;
+
+            //if (this.Cabinas.Count == 0) //No existe ninguna cabina
+            //{
+            //    x = new Cabina(1);
+            //    x.Estado = Estado_Cabina.Oc.ToString();
+
+            //    this.Cabinas.Add(x);
+
+            //    return x.Nro_cabina;
+            //}
+            //else
+            //{
+            //    List<Cabina> ordenada = this.Cabinas.OrderBy(o => o.Capacidad).ToList();
+
+
+            //    if (ordenada[0].Capacidad == 4) //genero una cabina nueva
+            //    {
+            //        x = new Cabina(this.Cabinas.Count+1);
+            //        x.Estado = Estado_Cabina.Oc.ToString();
+
+            //        this.Cabinas.Add(x);
+
+            //        return x.Nro_cabina;
+            //    }
+            //    else
+            //    {
+            //        this.Cabinas[ordenada[0].Nro_cabina - 1].Capacidad++;
+
+            //        this.Cabinas[ordenada[0].Nro_cabina - 1].Estado = Estado_Cabina.Oc.ToString();
+
+            //        return this.Cabinas[ordenada[0].Nro_cabina - 1].Nro_cabina;
+            //    }
+            //}
+        }
+
+        internal bool EsCapacidadUno(int cabina_actual)
+        {
+            return this.Cabinas[cabina_actual - 1].Capacidad == 1;
         }
     }
 }
