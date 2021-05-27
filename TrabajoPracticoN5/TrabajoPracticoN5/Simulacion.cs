@@ -150,7 +150,7 @@ namespace TrabajoPracticoN5
             agregarFila(fila_anterior);
 
 
-            for (int i = 1; i < 100; i++)
+            for (int i = 1; i < 200; i++)
             {
                 if (fila_anterior.Proximo_vehiculo < fila_anterior.Fin_atencion || fila_anterior.Fin_atencion == 0)
                 {
@@ -280,8 +280,10 @@ namespace TrabajoPracticoN5
             fila_nueva.Tiempo_entre_fin = 0;
             fila_nueva.Fin_atencion = 0;
 
-            fila_nueva.Monto = 0;
-            fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;
+            fila_nueva.Monto = -1;
+            fila_nueva.Monto_ac = fila_anterior.Monto_ac;
+
+            fila_nueva.Nro_cabina = -1;
 
             if (fila_nueva.Vehiculos.Count > 0)  //Hay vehiculos en estado EA
             {
@@ -298,6 +300,8 @@ namespace TrabajoPracticoN5
 
                 fila_nueva.Monto = buscarMonto(fila_nueva.Categoria);
                 fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;
+
+                fila_nueva.Nro_cabina = fila_nueva.Vehiculos[0].Cabina_actual;
             }
 
 
@@ -329,8 +333,10 @@ namespace TrabajoPracticoN5
             fila_nueva.Tiempo_entre_llegada = GeneradoresRND.exponencial(this.media, fila_nueva.Rnd_llegada);
             fila_nueva.Proximo_vehiculo = fila_nueva.Reloj + fila_nueva.Tiempo_entre_llegada;
 
+            V.Cabina_actual = fila_nueva.asignarCabina();
 
-            if (this.fila_nueva.Vehiculos.Count == 0)
+            //if (this.fila_nueva.Vehiculos.Count == 0)
+            if (fila_nueva.EsCapacidadUno(V.Cabina_actual)) //Si es asi, se calcula el tiempo fin
             {
                 //Categoria de Vehiculo
                 fila_nueva.Rnd_categoria = GeneradoresRND.RndLenguaje();
@@ -343,8 +349,7 @@ namespace TrabajoPracticoN5
                 V.Estado = Estado_Vehiculo.SA.ToString();
 
                 fila_nueva.Monto = buscarMonto(fila_nueva.Categoria);
-                fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;
-                
+                fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;  
             }
             else
             {
@@ -356,16 +361,16 @@ namespace TrabajoPracticoN5
                 fila_nueva.Tiempo_entre_fin = 0;
                 fila_nueva.Fin_atencion = fila_anterior.Fin_atencion;
 
-                fila_nueva.Monto = 0;
-                fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;
+                fila_nueva.Monto = -1;
+                fila_nueva.Monto_ac = fila_anterior.Monto_ac;
 
+                fila_nueva.Nro_cabina = -1;
             }
 
             //fila_nueva.Color_proximo_vehiculo = Color.GreenYellow;
             //fila_nueva.Color_fin_atencion = Color.White;
 
 
-            V.Cabina_actual = fila_nueva.asignarCabina();
             fila_nueva.Nro_cabina = V.Cabina_actual;
             if (fila_nueva.Max_cabina < fila_nueva.Cabinas.Count) fila_nueva.Max_cabina = fila_nueva.Cabinas.Count;
             fila_nueva.Vehiculos.Add(V);
