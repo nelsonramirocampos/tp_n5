@@ -338,11 +338,18 @@ namespace TrabajoPracticoN5
                 fila_nueva.Nro_cabina = fila_nueva.Vehiculos[0].Cabina_actual;
             }
 
+            if (fila_nueva.Fin_atencion == 0)
+            {
+                fila_nueva.Color_fin_atencion = Color.White;
+                fila_nueva.Color_proximo_vehiculo = Color.GreenYellow;
+            }
+            else
+            {
+                fila_nueva.Color_fin_atencion = Color.GreenYellow;
+                fila_nueva.Color_proximo_vehiculo = Color.White;
+            }
+            
 
-
-
-            //fila_nueva.Color_fin_atencion = Color.GreenYellow;
-            //fila_nueva.Color_proximo_vehiculo = Color.White;
         }
 
         private double buscarMonto(int categoria)
@@ -401,8 +408,16 @@ namespace TrabajoPracticoN5
                 fila_nueva.Nro_cabina = -1;
             }
 
-            //fila_nueva.Color_proximo_vehiculo = Color.GreenYellow;
-            //fila_nueva.Color_fin_atencion = Color.White;
+            if (fila_nueva.Fin_atencion == 0)
+            {
+                fila_nueva.Color_fin_atencion = Color.White;
+                fila_nueva.Color_proximo_vehiculo = Color.GreenYellow;
+            }
+            else
+            {
+                fila_nueva.Color_fin_atencion = Color.GreenYellow;
+                fila_nueva.Color_proximo_vehiculo = Color.White;
+            }
 
 
             fila_nueva.Nro_cabina = V.Cabina_actual;
