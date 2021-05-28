@@ -19,6 +19,12 @@ namespace TrabajoPracticoN5
         private Vehiculo vehiculo;
         private int nroCabina;
 
+        private double tiempo_desde;
+        private double tiempo_hasta;
+        private int indice_desde_fila_visible;
+        private int indice_hasta_fila_visible;
+
+
         private double media;
         //private List<double> rnd_normal;
         //private List<double> tiempo_normal;
@@ -112,6 +118,9 @@ namespace TrabajoPracticoN5
 
 
 
+            this.tiempo_desde = Convert.ToDouble(txt_desde.Text);
+            this.tiempo_hasta = Convert.ToDouble(txt_hasta.Text);
+
             this.cont_vehiculo = 0;
 
 
@@ -150,6 +159,11 @@ namespace TrabajoPracticoN5
             fila_anterior.Proximo_vehiculo = fila_anterior.Reloj + fila_anterior.Tiempo_entre_llegada;
             fila_anterior.Color_proximo_vehiculo = Color.GreenYellow;
             agregarFila(fila_anterior);
+
+            fila_nueva = fila_anterior;
+
+            dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = visualizarFila();
+            dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = visualizarFila();
 
 
             metrica_cada_cien = 100 * 60;
@@ -191,13 +205,14 @@ namespace TrabajoPracticoN5
                 //}
 
 
-                agregarFila(fila_nueva);
+                    agregarFila(fila_nueva);
 
-                actualizar_grilla_automoviles();
+                    actualizar_grilla_automoviles();
 
-                actualizar_grilla_cabina();
+                    actualizar_grilla_cabina();
+               
 
-                
+
             }
         }
 
@@ -220,6 +235,7 @@ namespace TrabajoPracticoN5
             }
 
             dgv_cabina.Rows.Add(fila);
+            dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = visualizarFila();
         }
 
         private void actualizar_grilla_automoviles()
@@ -232,6 +248,7 @@ namespace TrabajoPracticoN5
                 dgv_automovil.Columns[0].FillWeight = 1;
 
                 dgv_automovil.Rows.Add(nro_fila, this.fila_nueva.Vehiculos[0].Estado + " (" + this.fila_nueva.Vehiculos[0].Cabina_actual + ")");
+                dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = visualizarFila();
 
                 return;
             }
@@ -261,9 +278,8 @@ namespace TrabajoPracticoN5
             }
 
 
-
             dgv_automovil.Rows.Add(fila);
-
+            dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = visualizarFila();
         }
 
 
@@ -425,7 +441,7 @@ namespace TrabajoPracticoN5
             return 404;
         }
 
-        private void agregarFila(Vector_Estado fila)
+        private void agregarFila(Vector_Estado fila, bool visible = true)
         {
             dgv_simulacion.Rows.Add(
                     fila.Nro_fila,
@@ -446,6 +462,8 @@ namespace TrabajoPracticoN5
                     (fila.Monto_cada_cien == 0) ? "" : fila.Monto_cada_cien.ToString()
             );
 
+            dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Visible = visualizarFila();           
+
             dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells["cProximoVehiculo"].Style.BackColor = fila.Color_proximo_vehiculo;
             dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells["cFinAtencion"].Style.BackColor = fila.Color_fin_atencion;
         }
@@ -460,6 +478,11 @@ namespace TrabajoPracticoN5
             {
                 txt_min.Text = (Convert.ToDouble(txt_hs.Text) * 60).ToString("N2");
             }
+        }
+
+        private bool visualizarFila()
+        {
+            return this.fila_nueva.Reloj >= this.tiempo_desde && this.fila_nueva.Reloj <= this.tiempo_hasta;
         }
     }
 }
