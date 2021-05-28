@@ -54,13 +54,6 @@
             this.txt_media_llegada = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.dgv_simulacion = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.dgv_automovil = new System.Windows.Forms.DataGridView();
-            this.cNroFilaVehiculo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.dgv_cabina = new System.Windows.Forms.DataGridView();
-            this.btn_simular = new System.Windows.Forms.Button();
             this.cNroFila = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -77,6 +70,17 @@
             this.cMontoAc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMaxCabina = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cMontoCien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.dgv_automovil = new System.Windows.Forms.DataGridView();
+            this.cNroFilaVehiculo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.dgv_cabina = new System.Windows.Forms.DataGridView();
+            this.btn_simular = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txt_desde = new System.Windows.Forms.TextBox();
+            this.txt_hasta = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_categoria)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_costo)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -344,74 +348,6 @@
             this.dgv_simulacion.Size = new System.Drawing.Size(1198, 239);
             this.dgv_simulacion.TabIndex = 9;
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.dgv_simulacion);
-            this.panel1.Location = new System.Drawing.Point(16, 319);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1198, 239);
-            this.panel1.TabIndex = 10;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.dgv_automovil);
-            this.panel2.Location = new System.Drawing.Point(16, 579);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(606, 208);
-            this.panel2.TabIndex = 0;
-            // 
-            // dgv_automovil
-            // 
-            this.dgv_automovil.AllowUserToAddRows = false;
-            this.dgv_automovil.AllowUserToDeleteRows = false;
-            this.dgv_automovil.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_automovil.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.cNroFilaVehiculo});
-            this.dgv_automovil.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_automovil.Location = new System.Drawing.Point(0, 0);
-            this.dgv_automovil.Name = "dgv_automovil";
-            this.dgv_automovil.ReadOnly = true;
-            this.dgv_automovil.RowHeadersVisible = false;
-            this.dgv_automovil.Size = new System.Drawing.Size(606, 208);
-            this.dgv_automovil.TabIndex = 10;
-            // 
-            // cNroFilaVehiculo
-            // 
-            this.cNroFilaVehiculo.HeaderText = "Nro Fila";
-            this.cNroFilaVehiculo.Name = "cNroFilaVehiculo";
-            this.cNroFilaVehiculo.ReadOnly = true;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.dgv_cabina);
-            this.panel3.Location = new System.Drawing.Point(628, 579);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(586, 208);
-            this.panel3.TabIndex = 1;
-            // 
-            // dgv_cabina
-            // 
-            this.dgv_cabina.AllowUserToAddRows = false;
-            this.dgv_cabina.AllowUserToDeleteRows = false;
-            this.dgv_cabina.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_cabina.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_cabina.Location = new System.Drawing.Point(0, 0);
-            this.dgv_cabina.Name = "dgv_cabina";
-            this.dgv_cabina.ReadOnly = true;
-            this.dgv_cabina.RowHeadersVisible = false;
-            this.dgv_cabina.Size = new System.Drawing.Size(586, 208);
-            this.dgv_cabina.TabIndex = 11;
-            // 
-            // btn_simular
-            // 
-            this.btn_simular.Location = new System.Drawing.Point(262, 52);
-            this.btn_simular.Name = "btn_simular";
-            this.btn_simular.Size = new System.Drawing.Size(240, 50);
-            this.btn_simular.TabIndex = 11;
-            this.btn_simular.Text = "Simular";
-            this.btn_simular.UseVisualStyleBackColor = true;
-            this.btn_simular.Click += new System.EventHandler(this.Btn_simular_Click);
-            // 
             // cNroFila
             // 
             this.cNroFila.HeaderText = "Nro Fila";
@@ -508,11 +444,115 @@
             this.cMontoCien.Name = "cMontoCien";
             this.cMontoCien.ReadOnly = true;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dgv_simulacion);
+            this.panel1.Location = new System.Drawing.Point(16, 319);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1198, 239);
+            this.panel1.TabIndex = 10;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.dgv_automovil);
+            this.panel2.Location = new System.Drawing.Point(16, 579);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(606, 208);
+            this.panel2.TabIndex = 0;
+            // 
+            // dgv_automovil
+            // 
+            this.dgv_automovil.AllowUserToAddRows = false;
+            this.dgv_automovil.AllowUserToDeleteRows = false;
+            this.dgv_automovil.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_automovil.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cNroFilaVehiculo});
+            this.dgv_automovil.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_automovil.Location = new System.Drawing.Point(0, 0);
+            this.dgv_automovil.Name = "dgv_automovil";
+            this.dgv_automovil.ReadOnly = true;
+            this.dgv_automovil.RowHeadersVisible = false;
+            this.dgv_automovil.Size = new System.Drawing.Size(606, 208);
+            this.dgv_automovil.TabIndex = 10;
+            // 
+            // cNroFilaVehiculo
+            // 
+            this.cNroFilaVehiculo.HeaderText = "Nro Fila";
+            this.cNroFilaVehiculo.Name = "cNroFilaVehiculo";
+            this.cNroFilaVehiculo.ReadOnly = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.dgv_cabina);
+            this.panel3.Location = new System.Drawing.Point(628, 579);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(586, 208);
+            this.panel3.TabIndex = 1;
+            // 
+            // dgv_cabina
+            // 
+            this.dgv_cabina.AllowUserToAddRows = false;
+            this.dgv_cabina.AllowUserToDeleteRows = false;
+            this.dgv_cabina.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_cabina.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_cabina.Location = new System.Drawing.Point(0, 0);
+            this.dgv_cabina.Name = "dgv_cabina";
+            this.dgv_cabina.ReadOnly = true;
+            this.dgv_cabina.RowHeadersVisible = false;
+            this.dgv_cabina.Size = new System.Drawing.Size(586, 208);
+            this.dgv_cabina.TabIndex = 11;
+            // 
+            // btn_simular
+            // 
+            this.btn_simular.Location = new System.Drawing.Point(498, 55);
+            this.btn_simular.Name = "btn_simular";
+            this.btn_simular.Size = new System.Drawing.Size(240, 47);
+            this.btn_simular.TabIndex = 11;
+            this.btn_simular.Text = "Simular";
+            this.btn_simular.UseVisualStyleBackColor = true;
+            this.btn_simular.Click += new System.EventHandler(this.Btn_simular_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(251, 58);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(79, 13);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "Tiempo Desde:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(251, 85);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(76, 13);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "Tiempo Hasta:";
+            // 
+            // txt_desde
+            // 
+            this.txt_desde.Location = new System.Drawing.Point(336, 55);
+            this.txt_desde.Name = "txt_desde";
+            this.txt_desde.Size = new System.Drawing.Size(100, 20);
+            this.txt_desde.TabIndex = 14;
+            // 
+            // txt_hasta
+            // 
+            this.txt_hasta.Location = new System.Drawing.Point(336, 82);
+            this.txt_hasta.Name = "txt_hasta";
+            this.txt_hasta.Size = new System.Drawing.Size(100, 20);
+            this.txt_hasta.TabIndex = 15;
+            // 
             // Simulacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1226, 799);
+            this.Controls.Add(this.txt_hasta);
+            this.Controls.Add(this.txt_desde);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.btn_simular);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -596,6 +636,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cMontoAc;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMaxCabina;
         private System.Windows.Forms.DataGridViewTextBoxColumn cMontoCien;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txt_desde;
+        private System.Windows.Forms.TextBox txt_hasta;
     }
 }
 
