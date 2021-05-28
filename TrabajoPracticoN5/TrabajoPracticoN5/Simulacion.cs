@@ -22,6 +22,8 @@ namespace TrabajoPracticoN5
         private double media;
         //private List<double> rnd_normal;
         //private List<double> tiempo_normal;
+
+        private double metrica_cada_cien;
         public Simulacion()
         {
             InitializeComponent();
@@ -150,6 +152,9 @@ namespace TrabajoPracticoN5
             agregarFila(fila_anterior);
 
 
+            metrica_cada_cien = 1 * 60;
+
+
             for (int i = 1; i < 200; i++)
             {
                 if (fila_anterior.Proximo_vehiculo < fila_anterior.Fin_atencion || fila_anterior.Fin_atencion == 0)
@@ -163,6 +168,17 @@ namespace TrabajoPracticoN5
 
 
                 //actualizarVehiculos();
+
+                //Para la metrica de cada 100hs
+                if ((fila_nueva.Reloj - this.metrica_cada_cien) >= 0)
+                {
+                    fila_nueva.Monto_cada_cien = fila_nueva.Monto_ac;
+                    this.metrica_cada_cien = this.metrica_cada_cien + this.metrica_cada_cien;
+                }
+                else
+                {
+                    fila_nueva.Monto_cada_cien = 0;
+                }
 
                 fila_anterior = fila_nueva;
 
@@ -180,6 +196,8 @@ namespace TrabajoPracticoN5
                 actualizar_grilla_automoviles();
 
                 actualizar_grilla_cabina();
+
+                
             }
         }
 
@@ -424,7 +442,8 @@ namespace TrabajoPracticoN5
                     (fila.Nro_cabina <= 0) ? "" : fila.Nro_cabina.ToString(),
                     (fila.Monto <= 0) ? "" : fila.Monto.ToString(),
                     fila.Monto_ac.ToString(),
-                    fila.Max_cabina.ToString()
+                    fila.Max_cabina.ToString(),
+                    (fila.Monto_cada_cien == 0) ? "" : fila.Monto_cada_cien.ToString()
             );
 
             dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells["cProximoVehiculo"].Style.BackColor = fila.Color_proximo_vehiculo;
