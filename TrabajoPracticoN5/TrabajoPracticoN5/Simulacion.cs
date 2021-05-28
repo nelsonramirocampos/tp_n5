@@ -152,7 +152,7 @@ namespace TrabajoPracticoN5
             agregarFila(fila_anterior);
 
 
-            metrica_cada_cien = 1 * 60;
+            metrica_cada_cien = 100 * 60;
 
 
             for (int i = 1; i < 200; i++)
