@@ -32,6 +32,8 @@ namespace TrabajoPracticoN5
         private double monto_ac;
         private int max_cabina;
 
+        private double monto_cada_cien;
+
         private List<Vehiculo> vehiculos;
 
         private List<Cabina> cabinas;
@@ -64,6 +66,8 @@ namespace TrabajoPracticoN5
             this.Vehiculos = new List<Vehiculo>();
 
             this.Cabinas = new List<Cabina>();
+
+            this.monto_cada_cien = 0;
         }
 
         public int Nro_fila { get => nro_fila; set => nro_fila = value; }
@@ -85,6 +89,7 @@ namespace TrabajoPracticoN5
         public double Monto { get => monto; set => monto = value; }
         public double Monto_ac { get => monto_ac; set => monto_ac = value; }
         public int Max_cabina { get => max_cabina; set => max_cabina = value; }
+        public double Monto_cada_cien { get => monto_cada_cien; set => monto_cada_cien = value; }
 
         public void eliminar_vehiculo(int i)
         {
