@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrabajoPracticoN5
 {
@@ -124,42 +121,6 @@ namespace TrabajoPracticoN5
             this.Cabinas.Add(x);
 
             return x.Nro_cabina;
-
-
-            //Cabina x;
-
-            //if (this.Cabinas.Count == 0) //No existe ninguna cabina
-            //{
-            //    x = new Cabina(1);
-            //    x.Estado = Estado_Cabina.Oc.ToString();
-
-            //    this.Cabinas.Add(x);
-
-            //    return x.Nro_cabina;
-            //}
-            //else
-            //{
-            //    List<Cabina> ordenada = this.Cabinas.OrderBy(o => o.Capacidad).ToList();
-
-
-            //    if (ordenada[0].Capacidad == 4) //genero una cabina nueva
-            //    {
-            //        x = new Cabina(this.Cabinas.Count+1);
-            //        x.Estado = Estado_Cabina.Oc.ToString();
-
-            //        this.Cabinas.Add(x);
-
-            //        return x.Nro_cabina;
-            //    }
-            //    else
-            //    {
-            //        this.Cabinas[ordenada[0].Nro_cabina - 1].Capacidad++;
-
-            //        this.Cabinas[ordenada[0].Nro_cabina - 1].Estado = Estado_Cabina.Oc.ToString();
-
-            //        return this.Cabinas[ordenada[0].Nro_cabina - 1].Nro_cabina;
-            //    }
-            //}
         }
 
         internal bool EsCapacidadUno(int cabina_actual)
