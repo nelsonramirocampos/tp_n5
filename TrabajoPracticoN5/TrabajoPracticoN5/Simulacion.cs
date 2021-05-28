@@ -15,20 +15,15 @@ namespace TrabajoPracticoN5
         private Vector_Estado fila_anterior; //Fila anterior
         private Vector_Estado fila_nueva; //Fila nueva
 
-        int cont_vehiculo = 0;
-        private Vehiculo vehiculo;
-        private int nroCabina;
+        int cont_vehiculo = 0; //Para controlar la cantidad de autos en el sistema
 
+        //Para el desde y  hasta de filas para mostrar
         private double tiempo_desde;
         private double tiempo_hasta;
-        private int indice_desde_fila_visible;
-        private int indice_hasta_fila_visible;
 
+        private double lambda;
 
-        private double media;
-        //private List<double> rnd_normal;
-        //private List<double> tiempo_normal;
-
+        //Tiempo de cada cuanto se debe visualizar el saldo
         private double metrica_cada_cien;
         public Simulacion()
         {
@@ -49,12 +44,6 @@ namespace TrabajoPracticoN5
             dgv_fin_atencion.Rows.Add("3", "0,55", "1,42");
             dgv_fin_atencion.Rows.Add("4", "1,55", "2,17");
             dgv_fin_atencion.Rows.Add("5", "2,55", "3,5");
-
-            //dgv_fin_atencion.Rows.Add("1", "2", "4");
-            //dgv_fin_atencion.Rows.Add("2", "4", "6");
-            //dgv_fin_atencion.Rows.Add("3", "6", "8");
-            //dgv_fin_atencion.Rows.Add("4", "8", "10");
-            //dgv_fin_atencion.Rows.Add("5", "10", "12");
         }
 
         private void cargarCosto()
@@ -132,14 +121,9 @@ namespace TrabajoPracticoN5
             //Obtencion de valores
             double media = Convert.ToDouble(txt_media_llegada.Text.ToString());
             double desviacion = Convert.ToDouble(txt_desviacion_llegada.Text.ToString());
+            //Para el rnd de exponencial
+            this.lambda = 1 / Convert.ToDouble(txt_media_llegada.Text);
 
-
-            //Para los rnd de normal
-            //rnd_normal = new List<double>();
-            //rnd_normal.Add(GeneradoresRND.RndLenguaje());
-            //rnd_normal.Add(GeneradoresRND.RndLenguaje());
-            //tiempo_normal = GeneradoresRND.normal(media, desviacion, rnd_normal[0], rnd_normal[1]);
-            this.media = 1 / Convert.ToDouble(txt_media_llegada.Text);
 
             //Tiempo completo de la simulacion
             //if (String.IsNullOrEmpty(txt_min.Text))
@@ -152,10 +136,8 @@ namespace TrabajoPracticoN5
 
             //Cuando recien comienza la simulacion, la fila anterior es la primera, por lo cual, inicializa todo
             fila_anterior.Evento = "Inicio";
-            //fila_anterior.Rnd_llegada = rnd_normal[0]; rnd_normal.RemoveAt(0);
-            //fila_anterior.Tiempo_entre_llegada = tiempo_normal[0]; tiempo_normal.RemoveAt(0);
             fila_anterior.Rnd_llegada = GeneradoresRND.RndLenguaje();
-            fila_anterior.Tiempo_entre_llegada = GeneradoresRND.exponencial(this.media, fila_anterior.Rnd_llegada);
+            fila_anterior.Tiempo_entre_llegada = GeneradoresRND.exponencial(this.lambda, fila_anterior.Rnd_llegada);
             fila_anterior.Proximo_vehiculo = fila_anterior.Reloj + fila_anterior.Tiempo_entre_llegada;
             fila_anterior.Color_proximo_vehiculo = Color.GreenYellow;
             agregarFila(fila_anterior);
@@ -165,9 +147,8 @@ namespace TrabajoPracticoN5
             dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = visualizarFila();
             dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = visualizarFila();
 
-
+            //Queda fijo el valor para visualizar el monto cada tanto tiempo
             metrica_cada_cien = 100 * 60;
-
 
             for (int i = 1; i < 200; i++)
             {
@@ -179,9 +160,6 @@ namespace TrabajoPracticoN5
                 {
                     evento_fin_atencion(fila_nueva);
                 }
-
-
-                //actualizarVehiculos();
 
                 //Para la metrica de cada 100hs
                 if ((fila_nueva.Reloj - this.metrica_cada_cien) >= 0)
@@ -196,23 +174,9 @@ namespace TrabajoPracticoN5
 
                 fila_anterior = fila_nueva;
 
-                //if (this.rnd_normal.Count == 0)
-                //{
-                //    rnd_normal = new List<double>();
-                //    rnd_normal.Add(GeneradoresRND.RndLenguaje());
-                //    rnd_normal.Add(GeneradoresRND.RndLenguaje());
-                //    tiempo_normal = GeneradoresRND.normal(media, desviacion, rnd_normal[0], rnd_normal[1]);
-                //}
-
-
-                    agregarFila(fila_nueva);
-
-                    actualizar_grilla_automoviles();
-
-                    actualizar_grilla_cabina();
-               
-
-
+                agregarFila(fila_nueva);
+                actualizar_grilla_automoviles();
+                actualizar_grilla_cabina();
             }
         }
 
@@ -348,8 +312,6 @@ namespace TrabajoPracticoN5
                 fila_nueva.Color_fin_atencion = Color.GreenYellow;
                 fila_nueva.Color_proximo_vehiculo = Color.White;
             }
-            
-
         }
 
         private double buscarMonto(int categoria)
@@ -368,15 +330,12 @@ namespace TrabajoPracticoN5
             fila_nueva.Nro_fila = fila_anterior.Nro_fila + 1;
             fila_nueva.Evento = "Llegada Vehiculo " + cont_vehiculo;
             fila_nueva.Reloj = fila_anterior.Proximo_vehiculo;
-            //fila_nueva.Rnd_llegada = rnd_normal[0]; rnd_normal.RemoveAt(0);
-            //fila_nueva.Tiempo_entre_llegada = tiempo_normal[0]; tiempo_normal.RemoveAt(0);
             fila_nueva.Rnd_llegada = GeneradoresRND.RndLenguaje();
-            fila_nueva.Tiempo_entre_llegada = GeneradoresRND.exponencial(this.media, fila_nueva.Rnd_llegada);
+            fila_nueva.Tiempo_entre_llegada = GeneradoresRND.exponencial(this.lambda, fila_nueva.Rnd_llegada);
             fila_nueva.Proximo_vehiculo = fila_nueva.Reloj + fila_nueva.Tiempo_entre_llegada;
 
             V.Cabina_actual = fila_nueva.asignarCabina();
 
-            //if (this.fila_nueva.Vehiculos.Count == 0)
             if (fila_nueva.EsCapacidadUno(V.Cabina_actual)) //Si es asi, se calcula el tiempo fin
             {
                 //Categoria de Vehiculo
@@ -483,9 +442,6 @@ namespace TrabajoPracticoN5
             dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells["cFinAtencion"].Style.BackColor = fila.Color_fin_atencion;
         }
 
-        private void Dgv_categoria_SelectionChanged(object sender, EventArgs e)
-        {
-        }
 
         private void Txt_hs_KeyPress(object sender, KeyPressEventArgs e)
         {
