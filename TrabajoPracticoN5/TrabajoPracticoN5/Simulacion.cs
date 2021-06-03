@@ -25,6 +25,8 @@ namespace TrabajoPracticoN5
 
         //Tiempo de cada cuanto se debe visualizar el saldo
         private double metrica_cada_cien;
+
+        private bool isRowsFinal = false;
         public Simulacion()
         {
             InitializeComponent();
@@ -148,7 +150,7 @@ namespace TrabajoPracticoN5
             dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = visualizarFila();
 
             //Queda fijo el valor para visualizar el monto cada tanto tiempo
-            metrica_cada_cien = 100 * 60;
+            metrica_cada_cien = 1 * 60;
 
             for (int i = 1; i < 200; i++)
             {
@@ -178,6 +180,12 @@ namespace TrabajoPracticoN5
                 actualizar_grilla_automoviles();
                 actualizar_grilla_cabina();
             }
+
+            this.isRowsFinal = true;
+            agregarFila(fila_nueva);
+            actualizar_grilla_automoviles();
+            actualizar_grilla_cabina();
+
         }
 
         private void actualizar_grilla_cabina()
@@ -453,6 +461,11 @@ namespace TrabajoPracticoN5
 
         private bool visualizarFila()
         {
+            if (isRowsFinal == true)
+            {
+                return true;
+            }
+
             return this.fila_nueva.Reloj >= this.tiempo_desde && this.fila_nueva.Reloj <= this.tiempo_hasta;
         }
     }
