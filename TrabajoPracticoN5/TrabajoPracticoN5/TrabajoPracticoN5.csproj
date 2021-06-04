@@ -49,14 +49,14 @@
     <Compile Include="Estado_Cabina.cs" />
     <Compile Include="Estado_Vehiculo.cs" />
     <Compile Include="GeneradoresRND.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simulacion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Simulacion.Designer.cs">
+    <Compile Include="Simulacion.designer.cs">
       <DependentUpon>Simulacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilidades.cs" />
     <Compile Include="Vector_Estado.cs" />
     <Compile Include="Vehiculo.cs" />
