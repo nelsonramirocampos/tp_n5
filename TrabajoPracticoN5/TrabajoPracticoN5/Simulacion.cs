@@ -25,6 +25,7 @@ namespace TrabajoPracticoN5
 
         //Tiempo de cada cuanto se debe visualizar el saldo
         private double metrica_cada_cien;
+        private int veces_metrica_cada_cien;
 
         private bool isRowsFinal = false;
         public Simulacion()
@@ -57,7 +58,7 @@ namespace TrabajoPracticoN5
             dgv_costo.Rows.Add("5", "12");
         }
 
-        private void cargarCategoria()
+        private bool cargarCategoria()
         {
             dgv_categoria.Rows.Add("1", "0,1");
             dgv_categoria.Rows.Add("2", "0,5");
@@ -65,17 +66,17 @@ namespace TrabajoPracticoN5
             dgv_categoria.Rows.Add("4", "0,15");
             dgv_categoria.Rows.Add("5", "0,1");
 
-            calcularIntervaloCategoria();
+            return calcularIntervaloCategoria();
         }
 
-        private void calcularIntervaloCategoria()
+        private bool calcularIntervaloCategoria()
         {
-            double desde = 0;
-            double hasta = 0;
+            decimal desde = 0;
+            decimal hasta = 0;
 
             foreach (DataGridViewRow row in dgv_categoria.Rows)
             {
-                hasta = desde + Convert.ToDouble(row.Cells[1].Value.ToString());
+                hasta = desde + Convert.ToDecimal(row.Cells[1].Value.ToString());
 
                 //Columna Desde
                 row.Cells[2].Value = desde;
@@ -85,17 +86,54 @@ namespace TrabajoPracticoN5
                 desde = hasta;
             }
 
-            if (desde != 1.00)
+            decimal max = 1;
+
+            if (desde != max)
             {
-                MessageBox.Show("La suma de probabilidades de Categoria Vehiculos es distinta a 1");
-                return;
+                return false;
+            }
+            return true;
+        }
+
+        public static void soloNumeros(KeyPressEventArgs e)
+        {
+            //Para obligar a que sólo se introduzcan números
+            if (Char.IsDigit(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else if (Char.IsControl(e.KeyChar)) //permitir teclas de control como retroceso
+            {
+                e.Handled = false;
+            }
+            else if (e.KeyChar == '-') //permitir guion medi
+            {
+                e.Handled = false;
+            }
+            /*else if (e.KeyChar == ',') //Permitir punto decimal
+            {
+                e.Handled = false;
+            }*/
+            else if (e.KeyChar == '.') //Permitir punto decimal
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                //el resto de teclas pulsadas se desactivan
+                e.Handled = true;
             }
         }
 
         private void Btn_simular_Click(object sender, EventArgs e)
         {
             //Para validar que la probabilidad de 1
-            calcularIntervaloCategoria();
+            if (calcularIntervaloCategoria() == false)
+            {
+                MessageBox.Show("La suma de probabilidades de Categoria Vehiculos es distinta a 1");
+                return;
+            }
+
 
             //Limpiar grilla
             dgv_simulacion.Rows.Clear();
@@ -106,14 +144,57 @@ namespace TrabajoPracticoN5
             dgv_cabina.Columns.Clear();
             dgv_cabina.Columns.Add("cNroFilaCabina", "Nro Fila");
             dgv_cabina.Rows.Add("0");
+            txt_recaudacion_min.Text = "";
+            txt_recaudacion_100.Text = "";
+            veces_metrica_cada_cien = 0;
+            if (String.IsNullOrWhiteSpace(txt_hs.Text))
+            {
+                MessageBox.Show("Debe ingresar un valor válido para la cantidad de horas");
+                txt_hs.Focus();
+                return;
+            }
 
+            if (String.IsNullOrWhiteSpace(txt_desde.Text))
+            {
+                MessageBox.Show("Debe ingresar un valor válido para el Tiempo Desde");
+                txt_desde.Focus();
+                return;
+            }
 
+            if (String.IsNullOrWhiteSpace(txt_hasta.Text))
+            {
+                MessageBox.Show("Debe ingresar un valor válido para el Tiempo Hasta");
+                txt_hasta.Focus();
+                return;
+            }
+
+            txt_recaudacion_100.Text = "0";
+
+            ////Calculos de las primeras tablas
+            //int cat1 = int.Parse(dgv_categoria.Rows[0].Cells[0].Value.ToString());
+            //double prob1 = double.Parse(dgv_categoria.Rows[0].Cells[1].Value.ToString());
+            //int cat2 = int.Parse(dgv_categoria.Rows[1].Cells[0].Value.ToString());
+            //double prob2 = double.Parse(dgv_categoria.Rows[1].Cells[1].Value.ToString());
+            //int cat3 = int.Parse(dgv_categoria.Rows[2].Cells[0].Value.ToString());
+            //double prob3 = double.Parse(dgv_categoria.Rows[2].Cells[1].Value.ToString());
+            //int cat4 = int.Parse(dgv_categoria.Rows[3].Cells[0].Value.ToString());
+            //double prob4 = double.Parse(dgv_categoria.Rows[3].Cells[1].Value.ToString());
+            //int cat5 = int.Parse(dgv_categoria.Rows[4].Cells[0].Value.ToString());
+            //double prob5 = double.Parse(dgv_categoria.Rows[4].Cells[1].Value.ToString());
+            //double probCategoriVehiculo = prob1 + prob2 + prob3 + prob4 + prob5;
+            //if(probCategoriVehiculo != 1)
+            //{
+            //    MessageBox.Show("Validar la suma de probabilidades para Vehiculo", "error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return;
+            //}
+            //-------------------------------
+
+            this.isRowsFinal = false;
 
             this.tiempo_desde = Convert.ToDouble(txt_desde.Text);
             this.tiempo_hasta = Convert.ToDouble(txt_hasta.Text);
 
             this.cont_vehiculo = 0;
-
 
             //Para el manejo de las filas
             fila_anterior = new Vector_Estado();
@@ -122,18 +203,17 @@ namespace TrabajoPracticoN5
 
             //Obtencion de valores
             double media = Convert.ToDouble(txt_media_llegada.Text.ToString());
-            double desviacion = Convert.ToDouble(txt_desviacion_llegada.Text.ToString());
             //Para el rnd de exponencial
             this.lambda = 1 / Convert.ToDouble(txt_media_llegada.Text);
 
 
             //Tiempo completo de la simulacion
-            //if (String.IsNullOrEmpty(txt_min.Text))
-            //{
-            //    MessageBox.Show("Ingrese la cantidad de horas y luego presione la tecla Enter");
-            //    return;
-            //}
-            //double tiempo_simulacion = Convert.ToDouble(txt_min.Text);
+            if (String.IsNullOrEmpty(txt_min.Text))
+            {
+                MessageBox.Show("Ingrese la cantidad de horas y luego presione la tecla Enter");
+                return;
+            }
+            double tiempoSimulacion = Convert.ToDouble(txt_min.Text);
 
 
             //Cuando recien comienza la simulacion, la fila anterior es la primera, por lo cual, inicializa todo
@@ -146,13 +226,14 @@ namespace TrabajoPracticoN5
 
             fila_nueva = fila_anterior;
 
-            dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = visualizarFila();
-            dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = visualizarFila();
+            dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = true; //visualizarFila();
+            dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = true; //visualizarFila();
 
             //Queda fijo el valor para visualizar el monto cada tanto tiempo
             metrica_cada_cien = 1 * 60;
 
-            for (int i = 1; i < 200; i++)
+            //for (int i = 1; i < 200; i++)
+            for(double i = fila_anterior.Reloj; i < tiempoSimulacion; i = fila_anterior.Reloj)
             {
                 if (fila_anterior.Proximo_vehiculo < fila_anterior.Fin_atencion || fila_anterior.Fin_atencion == 0)
                 {
@@ -168,6 +249,8 @@ namespace TrabajoPracticoN5
                 {
                     fila_nueva.Monto_cada_cien = fila_nueva.Monto_ac;
                     this.metrica_cada_cien = this.metrica_cada_cien + this.metrica_cada_cien;
+
+                    veces_metrica_cada_cien++;
                 }
                 else
                 {
@@ -176,16 +259,42 @@ namespace TrabajoPracticoN5
 
                 fila_anterior = fila_nueva;
 
-                agregarFila(fila_nueva);
-                actualizar_grilla_automoviles();
-                actualizar_grilla_cabina();
+                if (fila_nueva.Reloj <= tiempoSimulacion)
+                {
+                    agregarFila(fila_nueva);
+                    actualizar_grilla_automoviles();
+                    actualizar_grilla_cabina();
+                }
             }
 
-            this.isRowsFinal = true;
-            agregarFila(fila_nueva);
-            actualizar_grilla_automoviles();
-            actualizar_grilla_cabina();
+            dgv_automovil.Rows[dgv_automovil.Rows.Count - 1].Visible = true; //visualizarFila();
+            dgv_cabina.Rows[dgv_cabina.Rows.Count - 1].Visible = true; //visualizarFila();
+            dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Visible = true; //visualizarFila();
 
+            //this.isRowsFinal = true;
+            //agregarFila(fila_nueva);
+            //actualizar_grilla_automoviles();
+            //actualizar_grilla_cabina();
+
+            double rec_ac = double.Parse(dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells[13].Value.ToString());
+            double horas_ac = double.Parse(dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells[2].Value.ToString());
+            txt_recaudacion_min.Text = (Utilidades.truncar(rec_ac / horas_ac)).ToString();
+
+
+
+            txt_recaudacion_100.Text = Convert.ToString( Utilidades.truncar(Convert.ToDouble(txt_recaudacion_100.Text) / veces_metrica_cada_cien));
+        }
+
+        private double tiempoProximoEvento()
+        {
+            if (this.fila_anterior.Proximo_vehiculo < this.fila_anterior.Fin_atencion)
+            {
+                return this.fila_anterior.Proximo_vehiculo;
+            }
+            else
+            {
+                return this.fila_anterior.Fin_atencion;
+            }
         }
 
         private void actualizar_grilla_cabina()
@@ -203,7 +312,7 @@ namespace TrabajoPracticoN5
 
             foreach (Cabina cabina in this.fila_nueva.Cabinas)
             {
-                fila.Cells[cabina.Nro_cabina].Value = cabina.Estado + "(" + cabina.Capacidad + ")";
+                fila.Cells[cabina.Nro_cabina].Value = cabina.Estado + "(" + cabina.Capacidad + ")" + " / (" + cabina.Tiempo_acu_oc + ")" ;
             }
 
             dgv_cabina.Rows.Add(fila);
@@ -309,6 +418,13 @@ namespace TrabajoPracticoN5
 
                 fila_nueva.Nro_cabina = fila_nueva.Vehiculos[0].Cabina_actual;
             }
+            else //No hay vehiculos, por lo cual, la cabina donde se encontraba esta libre
+            {
+                fila_nueva.Cabinas[v.Cabina_actual - 1].Tiempo_fin_oc = fila_nueva.Reloj;
+                fila_nueva.Cabinas[v.Cabina_actual - 1].Tiempo_acu_oc = Utilidades.truncar(
+                    fila_nueva.Cabinas[v.Cabina_actual - 1].Tiempo_acu_oc + 
+                    (fila_nueva.Cabinas[v.Cabina_actual - 1].Tiempo_fin_oc - fila_nueva.Cabinas[v.Cabina_actual - 1].Tiempo_inicio_oc));
+            }
 
             if (fila_nueva.Fin_atencion == 0)
             {
@@ -357,9 +473,11 @@ namespace TrabajoPracticoN5
                 V.Estado = Estado_Vehiculo.SA.ToString();
 
                 fila_nueva.Monto = buscarMonto(fila_nueva.Categoria);
-                fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;  
+                fila_nueva.Monto_ac = fila_anterior.Monto_ac + fila_nueva.Monto;
+
+                fila_nueva.Cabinas[V.Cabina_actual-1].Tiempo_inicio_oc = fila_nueva.Reloj;
             }
-            else
+            else //Se suma a la cola de espera
             {
                 //Categoria de Vehiculo
                 fila_nueva.Rnd_categoria = 0;
@@ -441,23 +559,41 @@ namespace TrabajoPracticoN5
                     (fila.Monto <= 0) ? "" : fila.Monto.ToString(),
                     fila.Monto_ac.ToString(),
                     fila.Max_cabina.ToString(),
-                    (fila.Monto_cada_cien == 0) ? "" : fila.Monto_cada_cien.ToString()
+                    (fila.Monto_cada_cien == 0) ? "" : fila.Monto_cada_cien.ToString(),
+                    fila.cantidadCabinasOcupadas(),
+                    fila.porcentajeCabinaOcupada()
             );
 
-            dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Visible = visualizarFila();           
+            //if (string.IsNullOrWhiteSpace(txt_recaudacion_100.Text))
+            //{ 
+            //    txt_recaudacion_100.Text = (fila.Monto_cada_cien == 0) ? "" : fila.Monto_cada_cien.ToString();
+            //    if (txt_recaudacion_100.Text != "")
+            //        txt_recaudacion_100.Text = (Utilidades.truncar(double.Parse(txt_recaudacion_100.Text)/fila.Reloj)).ToString();
+            //}
+
+            if (dgv_simulacion.Rows.Count == 1)
+            {
+                dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Visible = true;
+            }
+            else
+            {
+                dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Visible = visualizarFila();
+            }
+
+
+
+            //Para la metrica de acumulado cada 100hs
+            if (fila.Monto_cada_cien != 0)
+            {
+                txt_recaudacion_100.Text = Convert.ToString(Convert.ToDouble(txt_recaudacion_100.Text) + fila.Monto_cada_cien);
+            }
+
+
 
             dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells["cProximoVehiculo"].Style.BackColor = fila.Color_proximo_vehiculo;
             dgv_simulacion.Rows[dgv_simulacion.Rows.Count - 1].Cells["cFinAtencion"].Style.BackColor = fila.Color_fin_atencion;
         }
 
-
-        private void Txt_hs_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if ((int) e.KeyChar == (int) Keys.Enter)
-            {
-                txt_min.Text = (Convert.ToDouble(txt_hs.Text) * 60).ToString("N2");
-            }
-        }
 
         private bool visualizarFila()
         {
@@ -468,5 +604,44 @@ namespace TrabajoPracticoN5
 
             return this.fila_nueva.Reloj >= this.tiempo_desde && this.fila_nueva.Reloj <= this.tiempo_hasta;
         }
+
+        private void dgv_categoria_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            soloNumeros(e);
+
+        }
+
+        private void txt_desde_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            soloNumeros(e);
+        }
+
+        private void txt_hasta_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            soloNumeros(e);
+        }
+
+        private void dgv_simulacion_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Txt_hs_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txt_hs.Text) == false)
+            {
+                txt_min.Text = (Convert.ToDouble(txt_hs.Text) * Convert.ToDouble(60)).ToString();
+            }
+            else
+            {
+                txt_min.Text = "0";
+            }
+        }
+
+        private void Dgv_categoria_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
+
 }

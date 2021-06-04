@@ -29,6 +29,9 @@ namespace TrabajoPracticoN5
         private double monto_ac;
         private int max_cabina;
 
+        private double promedio_cab_oc_fila = 0;
+        private double max_prom_cabina_oc = 0;
+
         private double monto_cada_cien;
 
         private List<Vehiculo> vehiculos;
@@ -87,6 +90,8 @@ namespace TrabajoPracticoN5
         public double Monto_ac { get => monto_ac; set => monto_ac = value; }
         public int Max_cabina { get => max_cabina; set => max_cabina = value; }
         public double Monto_cada_cien { get => monto_cada_cien; set => monto_cada_cien = value; }
+        public double Max_prom_cabina_oc { get => max_prom_cabina_oc; set => max_prom_cabina_oc = value; }
+        public double Promedio_cab_oc_fila { get => promedio_cab_oc_fila; set => promedio_cab_oc_fila = value; }
 
         public void eliminar_vehiculo(int i)
         {
@@ -126,6 +131,28 @@ namespace TrabajoPracticoN5
         internal bool EsCapacidadUno(int cabina_actual)
         {
             return this.Cabinas[cabina_actual - 1].Capacidad == 1;
+        }
+
+        internal double porcentajeCabinaOcupada()
+        {
+            int cantidad = 0;
+            foreach (Cabina cabina in this.Cabinas)
+            {
+                if (cabina.Estado == Estado_Cabina.Oc.ToString()) cantidad++;
+            }
+
+            return (this.Cabinas.Count == 0) ? 0 : Utilidades.truncar((Convert.ToDouble(cantidad)/ Convert.ToDouble(this.Cabinas.Count)) * 100);
+        }
+
+        internal int cantidadCabinasOcupadas()
+        {
+            int cantidad = 0;
+            foreach (Cabina cabina in this.Cabinas)
+            {
+                if (cabina.Estado == Estado_Cabina.Oc.ToString()) cantidad++;
+            }
+
+            return cantidad;
         }
     }
 }
