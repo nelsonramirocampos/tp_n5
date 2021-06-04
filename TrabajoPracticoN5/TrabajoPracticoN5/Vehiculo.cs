@@ -10,6 +10,8 @@ namespace TrabajoPracticoN5
         private double costo;
         private double tiempo_fin;
         private int cabina_actual;
+
+
         public Vehiculo()
         {
             this.nro = 0;
